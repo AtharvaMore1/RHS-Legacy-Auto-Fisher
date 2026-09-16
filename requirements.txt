@@ -1,0 +1,4 @@
+soundcard
+pydirectinput
+keyboard
+numpy
