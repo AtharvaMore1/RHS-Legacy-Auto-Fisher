@@ -1,15 +1,12 @@
 """
-Auto Fisher - GUI version
+Auto Fisher - by Atharva M
 
 Listens to your system audio (loopback) and double-clicks when a sound
 above a set threshold is detected. If nothing is detected for a while,
 it single-clicks to re-cast, assuming something went wrong.
 
-Dependencies:
+Dependencies (run this in your terminal):
     pip install soundcard pydirectinput keyboard numpy
-
-Note: keyboard (for the global hotkey) usually needs the script to be
-run as Administrator on Windows to detect key presses reliably.
 """
 
 import threading
@@ -22,7 +19,6 @@ import soundcard as sc
 import pydirectinput
 import keyboard
 
-# --- Defaults ---
 DEFAULTS = {
     "threshold": 0.01,
     "chunk_size": 2048,
@@ -50,7 +46,6 @@ class AutoFisherApp:
         self.hotkey_handle = None
         self.waiting_for_key = False
 
-        # Tkinter variables for each setting (stored as strings, validated on use)
         self.vars = {
             "threshold": tk.StringVar(value=str(DEFAULTS["threshold"])),
             "chunk_size": tk.StringVar(value=str(DEFAULTS["chunk_size"])),
@@ -69,7 +64,6 @@ class AutoFisherApp:
 
         self.root.protocol("WM_DELETE_WINDOW", self._on_close)
 
-    # ---------- UI ----------
 
     def _build_ui(self):
         pad = {"padx": 8, "pady": 4}
@@ -144,7 +138,6 @@ class AutoFisherApp:
         )
         row += 1
 
-    # ---------- Validation ----------
 
     @staticmethod
     def _validate_float(proposed):
@@ -177,7 +170,6 @@ class AutoFisherApp:
                 settings[key] = default
         return settings
 
-    # ---------- Hotkey ----------
 
     def _register_hotkey(self, key):
         if self.hotkey_handle is not None:
@@ -207,7 +199,6 @@ class AutoFisherApp:
         self._register_hotkey(new_key)
         self.waiting_for_key = False
 
-    # ---------- Macro control ----------
 
     def _toggle_running(self):
         if self.running:
@@ -243,7 +234,6 @@ class AutoFisherApp:
                 pass
         self.root.destroy()
 
-    # ---------- Worker (runs in background thread) ----------
 
     def _worker_loop(self, settings):
         try:
